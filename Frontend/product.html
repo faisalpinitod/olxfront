@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Classified</title>
+    <style>
+        /* #container{
+            width:30%;
+            margin: auto;
+            margin-top: 20px;
+        } */
+
+        nav{
+            width:100%;
+            margin: auto;
+            display: flex;
+            justify-content: space-evenly;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            background-color: bisque;
+
+        }
+        nav>a{
+            /* border: 1px solid red; */
+            padding: 10px;
+            font-size: 18px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color:rgb(10, 76, 231)
+        }
+
+        #container{
+            width:25%;
+            margin: auto;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin-top: 20px;
+        }
+        form>input{
+            width:80%;
+            margin: auto;
+            padding: 10px;
+            margin: 15px;
+        }
+
+        #cont{
+            width:30%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #cont>button{
+            width:130px;
+            padding:10px
+        }
+
+        #product{
+            width:330px
+        }
+        select{
+            width:330px;
+            padding: 10px;
+            margin: 15px;
+        }
+        /* #signup{
+            width:280px
+        } */
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="./index.html">Login</p>
+        <a href="./product.html">Post Classified</p>
+        <a href="./browse.html">Browse Classified</a>
+    </nav>
+    <div id="container">
+        <form action="">
+            <input type="text" placeholder="Name" id="name">
+            <input type="text" placeholder="Description" id="desc">
+            <select name="" id="category">
+                <option value="">Category</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Furniture">Furniture</option>
+            </select>
+            <input type="text" placeholder="Image Url" id="image">
+            <input type="text" placeholder="Location" id="location">
+            <input type="date" placeholder="Date" id="date">
+            <input type="number" placeholder="Price" id="price">
+            <input type="submit" placeholder="Submit" id="product">
+        </form>
+    </div>
+</body>
+</html>
+<script>
+
+
+document.querySelector("form").addEventListener("submit",myfun3)
+async function myfun3(e){
+        e.preventDefault()
+
+
+        const name=document.querySelector("#name").value
+        const image=document.querySelector("#image").value
+        const category=document.querySelector("#category").value
+        const location=document.querySelector("#location").value
+        const date=document.querySelector("#date").value
+        const price=document.querySelector("#price").value
+        const description=document.querySelector("#desc").value
+
+       
+        
+        const mainUser={name,image,category,location,date,price,description}
+        try{
+           const res=await fetch("https://blue-doubtful-scallop.cyclic.app/user/signup",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(mainUser)
+           }) 
+           if(res.ok){
+            alert("Product posted")
+           }else{
+            alert("Posted Failed")
+           }
+        }catch(err){
+            alert("Bad Request")
+        }
+    }
+</script>

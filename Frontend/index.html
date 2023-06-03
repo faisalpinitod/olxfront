@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <style>
+       
+        nav{
+            width:100%;
+            margin: auto;
+            display: flex;
+            justify-content: space-evenly;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            background-color: bisque;
+
+        }
+        nav>a{
+            /* border: 1px solid red; */
+            padding: 10px;
+            font-size: 18px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color:rgb(10, 76, 231)
+        }
+
+        #container{
+            width:70%;
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        #main{
+            width:30%;
+            margin: auto;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin-top: 20px;
+        }
+        form>input{
+            width:80%;
+            margin: auto;
+            padding: 10px;
+            margin: 15px;
+        }
+
+        #cont{
+            width:30%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #cont>button{
+            width:130px;
+            padding:10px
+        }
+
+        #login{
+            width:280px
+        }
+        #signup{
+            width:280px
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="./index.html">Login</p>
+        <a href="./product.html">Post Classified</p>
+        <a href="./browse.html">Browse Classified</a>
+    </nav>
+    <div id="container">
+        <div id="cont">
+            <button id="ltoggle">Login Form</button>
+            <button id="stoggle">SignUp Form</button>
+        </div>
+        <div id="main">
+            <form action="">
+                <input type="email" id="lemail" placeholder="Email">
+                <input type="password" id="lpassword" placeholder="password">
+                <input type="submit" id="login">
+            </form>
+        </div>
+
+    </div>
+
+</body>
+</html>
+<script>
+    let main=document.querySelector("#main")
+
+    document.querySelector('#ltoggle').addEventListener("click",myfunc)
+
+    function myfunc(){
+        main.innerHTML=""
+        main.innerHTML=`<form action="">
+                <input type="email" id="lemail" placeholder="Email">
+                <input type="password" id="lpassword" placeholder="password">
+                <input type="submit" id="login">
+            </form>`
+
+
+            document.querySelector("form").addEventListener("submit",login)
+    }
+
+
+    document.querySelector('#stoggle').addEventListener("click",myfunc2)
+
+    function myfunc2(){
+        main.innerHTML=""
+        main.innerHTML=`<form action="">
+                <input type="email" id="email" placeholder="Email">
+                <input type="password" id="password" placeholder="password">
+                <input type="password" id="cpassword" placeholder="Confirm password">
+                <input type="submit" id="signup">
+            </form>`
+
+            document.querySelector("form").addEventListener("submit",signup)
+    }
+
+
+    async function signup(e){
+        e.preventDefault()
+
+
+        const email=document.querySelector("#email").value
+        const password=document.querySelector("#password").value
+        const confirmpassword=document.querySelector("#cpassword").value
+
+       
+        if(password!==confirmpassword){  
+            return alert("Please Type correct password")
+        }
+        const mainUser={email,password}
+        try{
+           const res=await fetch("https://blue-doubtful-scallop.cyclic.app/user/signup",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(mainUser)
+           }) 
+           if(res.ok){
+            alert("User Registered Successful")
+           }else{
+            alert("Registration Failed")
+           }
+        }catch(err){
+            alert("Bad Request")
+        }
+    }
+
+
+    document.querySelector("form").addEventListener("submit",login)
+
+    async function login(e){
+        e.preventDefault()
+
+        const email=document.querySelector("#lemail").value
+        const password=document.querySelector("#lpassword").value
+
+
+       
+        const mainUser={email,password}
+        try{
+           const res=await fetch('https://blue-doubtful-scallop.cyclic.app/user/login',{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(mainUser)
+           }) 
+           
+          
+           const data=await res.json()
+           console.log(data)
+           if(data.token){
+            alert("Login Successful")
+            console.log(data.token)
+            localStorage.setItem("token",data.token)
+            window.location=("./product.html")
+           }else{
+            alert("Something went wrong")
+           }
+        }catch(err){
+            alert("Bad Request")
+        }
+    
+    }
+
+
+</script>
